@@ -186,14 +186,37 @@ void editCS(int workshop)
 }
 
 
-void loadData (Pipe& p, CS& cs) {
+void to_file_all_data()
+{
+    ofstream fout;   //ifstream file - otvechaet za chtenie, перед этим библеотеку подключаем fstream and string
+    fout.open("savee.txt");
+
+    if (p.lenght == 0 and p.diameter == 0)
+        fout << "Pipe not found \n";
+    else
+    {
+        fout << "YOUR PIPE: \n" << p.lenght << endl << p.diameter << endl << p.status << "\n";
+    }
+
+    if (cs.shopcount == 0 and cs.workshop == 0)
+        fout << "CS not found \n";
+    else
+    {
+        fout << "\n" << "YOUR CS: \n" << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "\n";
+    }
+    
+    fout.close();
+}
+
+void from_file_all_date()
+{
     ifstream fin;
-    string line;
     fin.open("savee.txt");
-    getline(fin, line);
-    p.lenght = stoi(line);
+    cout << "Lenth: \n";
+    fin >> p.lenght;
+    fin >> p.diameter;
+    fin >> p.status;
     fin.close();
-    cout << "The sad" << endl;
 }
 
 
@@ -204,6 +227,7 @@ int main()
 
         menu();
         cout << "\n";
+
         switch (option)
         {
         case 1:
@@ -211,40 +235,50 @@ int main()
             addPipe();
             WORK(p.status);
             cout << "lenght = " << p.lenght << "\n" << "diameter = " << p.diameter << "\n" << "status = " << p.status << endl;
+            system("pause");
+            system("cls");
             break;
 
         case 2:
             system("cls");
             addCS();
             cout << "\n";
+            system("pause");
+            system("cls");
             break;
         case 3:
             system("cls");
             Viewallobjects();
             cout << "\n";
+            system("pause");
+            system("cls");
             break;
         case 4:
             system("cls");
             editPipe(p.status);
+            system("pause");
+            system("cls");
             break;
         case 5:
             system("cls");
             editCS(cs.workshop);
+            system("pause");
+            system("cls");
             break;
         case 6: {
-            ofstream fout;   //ifstream file - otvechaet za chtenie, перед этим библеотеку подключаем fstream and string
-            fout.open("savee.txt");
-            fout << p.lenght << endl << p.diameter << endl << p.status << endl << "\n" << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "%" << endl;
-            fout.close();
+            to_file_all_data();
             cout << "File was saved" << "\n";
+            system("pause");
+            system("cls");
             break;
         }
 
         case 7: {
-            //ifstream fin;
-            //fin.open("savee.txt");
-            //fin >> p.lenght >> p.diameter >> p.status;
-
+            from_file_all_date();
+            cout << "File was uploaded" << "\n";
+            system("pause");
+            system("cls");
+            break;
         }
         case 0:
             return 0;
