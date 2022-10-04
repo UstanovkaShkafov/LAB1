@@ -67,11 +67,11 @@ string WORK(string& status) {
     do {
         cin >> status;
         if (status == "yes") {
-            status = "Pipe works";
+            status = "Pipe_works";
             return status;
         }
         else if (status == "no") {
-            status = "Pipe under repair";
+            status = "Pipe_under_repair";
             return (status);
         }
         else {
@@ -146,43 +146,35 @@ void Viewallobjects()
 
 }
 
-string editPipe(string& status)
+void editPipe()
 {
-    cout << "Change the state of the pipe( 1 - work; 0 - don't work)" << endl;
-
-    do {
-        cin >> status;
-        if (status == "1") {
-            status = "Pipe works";
-            return status;
-        }
-        else if (status == "0") {
-            status = "Pipe under repair";
-            return (status);
-        }
-        else {
-            cout << "You need write 1 or 0!!!\n";
-        }
-    } while (status != "yes" or status != "no");
-
-    cout << "\n";
+    if (p.status != "") {
+        WORK(p.status);
+    }
+    else {
+        cout << " The pipe has not been added\n";
+    }
 }
 
-void editCS(int workshop)
+void editCS()
 {
-    do {
 
-        cout << "Change the number of workshops (<= " << cs.shopcount << ")" << endl;
-        cin >> workshop;
-        cout << "\n";
-        cin.clear(); //clean pole vvoda
-        cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
 
-    } while (cs.shopcount < workshop or workshop < 1);
+    if (cs.shopcount != 0) {
+        do {
+            cout << "Change the number of workshops (<= " << cs.shopcount << ")" << endl;
+            cin >> cs.workshop;
+            cout << "\n";
+            cin.clear(); //clean pole vvoda
+            cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
 
-    cs.workshop = workshop;
-
-    cs.effectiveness = cs.workshop / cs.shopcount;
+        } while (cs.shopcount < cs.workshop or cs.workshop < 1);
+        cs.workshop = cs.workshop;
+        cs.effectiveness = cs.workshop / cs.shopcount;
+    }
+    else {
+        cout << "ERROR\n";
+    }
 }
 
 
@@ -191,28 +183,28 @@ void to_file_all_data()
     ofstream fout;   //ifstream file - otvechaet za chtenie, перед этим библеотеку подключаем fstream and string
     fout.open("savee.txt");
 
-    if (p.lenght == 0 and p.diameter == 0)
-        fout << "Pipe not found \n";
-    else
-    {
-        fout << "YOUR PIPE: \n" << p.lenght << endl << p.diameter << endl << p.status << "\n";
-    }
+    //if (p.lenght == 0 and p.diameter == 0)
+       // fout << "Pipe not found \n";
+    //else
+    //{
+    fout << p.lenght << endl << p.diameter << endl << p.status << "\n";
+    //}
 
-    if (cs.shopcount == 0 and cs.workshop == 0)
-        fout << "CS not found \n";
-    else
-    {
-        fout << "\n" << "YOUR CS: \n" << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "\n";
-    }
-    
+    //if (cs.shopcount == 0 and cs.workshop == 0)
+      //  fout << "CS not found \n";
+    //else
+    //{
+    fout << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "\n";
+    // }
+
     fout.close();
 }
 
 void from_file_all_date()
 {
     ifstream fin;
+    string line;
     fin.open("savee.txt");
-    cout << "Lenth: \n";
     fin >> p.lenght;
     fin >> p.diameter;
     fin >> p.status;
@@ -255,13 +247,13 @@ int main()
             break;
         case 4:
             system("cls");
-            editPipe(p.status);
+            editPipe();
             system("pause");
             system("cls");
             break;
         case 5:
             system("cls");
-            editCS(cs.workshop);
+            editCS();
             system("pause");
             system("cls");
             break;
