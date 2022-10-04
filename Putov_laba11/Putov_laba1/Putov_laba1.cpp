@@ -5,29 +5,30 @@ using namespace std;
 
 struct Pipe
 {
-    float lenght, diameter;
+    float lenght = 0, diameter = 0;
     string status;
-
 };
 struct CS
 {
     string name;
-    double  shopcount, workshop;
-    float effectiveness;
+    double  shopcount = 0, workshop = 0;
+    float effectiveness = 0;
 };
 
-Pipe p;
-CS cs;
-int option = -1;
 
-void menu()
+
+
+void menu(int& option)
 {
-    cout << "\nChoose option:\n\n 1.Add pipe 2.Add CS 3.View all objects 4.Edit pipe 5.Edit CS 6.Save 7.Load 0.Exit\n";
-    cin >> option;
-
+    cout << "Choose option:\n\n 1.Add pipe 2.Add CS 3.View all objects 4.Edit pipe 5.Edit CS 6.Save 7.Load 0.Exit\n";
+    while (!((cin >> option).good()) || (option < 0)) {
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
 }
 
-void addPipe()
+void addPipe(Pipe& p)
 {
     float lenght, diameter;
 
@@ -56,13 +57,10 @@ void addPipe()
     } while (diameter <= 0);
     cout << "\n";
     p.diameter = diameter;
-
-
 }
 
 string WORK(string& status) {
     cout << "Enter the status (pipe is work? yes or no)" << endl; //STATUS 
-         //ne vivoditsa
 
     do {
         cin >> status;
@@ -83,7 +81,7 @@ string WORK(string& status) {
 
 }
 
-void addCS()
+void addCS(CS& cs)
 {
     string name;
     double  shopcount, workshop;
@@ -130,7 +128,7 @@ void addCS()
     cs.effectiveness = effectiveness;
 }
 
-void Viewallobjects()
+void Viewallobjects(Pipe& p, CS& cs)
 {
     cout << "Your Pipes: " << endl;
     cout << "The length = " << p.lenght << endl;
@@ -146,7 +144,7 @@ void Viewallobjects()
 
 }
 
-void editPipe()
+void editPipe(Pipe& p)
 {
     if (p.status != "") {
         WORK(p.status);
@@ -156,7 +154,7 @@ void editPipe()
     }
 }
 
-void editCS()
+void editCS(CS& cs)
 {
 
 
@@ -178,7 +176,7 @@ void editCS()
 }
 
 
-void to_file_all_data()
+void to_file_all_data(Pipe& p, CS& cs)
 {
     ofstream fout;   //ifstream file - otvechaet za chtenie, перед этим библеотеку подключаем fstream and string
     fout.open("savee.txt");
@@ -200,7 +198,7 @@ void to_file_all_data()
     fout.close();
 }
 
-void from_file_all_date()
+void from_file_all_date(Pipe& p, CS& cs)
 {
     ifstream fin;
     string line;
@@ -208,57 +206,63 @@ void from_file_all_date()
     fin >> p.lenght;
     fin >> p.diameter;
     fin >> p.status;
+    fin >> cs.name;
+    fin >> cs.shopcount;
+    fin >> cs.workshop;
+    fin >> cs.effectiveness;
     fin.close();
 }
 
-
 int main()
 {
+    Pipe p;
+    CS cs;
+    string status;
+    int option = -1;
     setlocale(LC_ALL, "ru");
     while (option) {
 
-        menu();
+        menu(option);
         cout << "\n";
 
         switch (option)
         {
         case 1:
             system("cls");
-            addPipe();
+            addPipe(p);
             WORK(p.status);
             cout << "lenght = " << p.lenght << "\n" << "diameter = " << p.diameter << "\n" << "status = " << p.status << endl;
             system("pause");
             system("cls");
             break;
-
         case 2:
             system("cls");
-            addCS();
+            addCS(cs);
             cout << "\n";
             system("pause");
             system("cls");
             break;
         case 3:
             system("cls");
-            Viewallobjects();
+            Viewallobjects(p, cs);
             cout << "\n";
             system("pause");
             system("cls");
             break;
         case 4:
             system("cls");
-            editPipe();
+            editPipe(p);
             system("pause");
             system("cls");
             break;
         case 5:
             system("cls");
-            editCS();
+            editCS(cs);
             system("pause");
             system("cls");
             break;
         case 6: {
-            to_file_all_data();
+            to_file_all_data(p, cs);
             cout << "File was saved" << "\n";
             system("pause");
             system("cls");
@@ -266,7 +270,7 @@ int main()
         }
 
         case 7: {
-            from_file_all_date();
+            from_file_all_date(p, cs);
             cout << "File was uploaded" << "\n";
             system("pause");
             system("cls");
@@ -276,11 +280,11 @@ int main()
             return 0;
             break;
 
-        default: cout << "Not correct number";
+        default:
+            cout << "Not correct number\n";
             break;
         }
     }
-
 
 
 }
