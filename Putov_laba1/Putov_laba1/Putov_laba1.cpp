@@ -1,272 +1,259 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
+
 using namespace std;
 
 struct Pipe
 {
-    float lenght, diameter;
-    string status;
-
+    float lenght = 0, diameter = 0;
+    int status = 0;
 };
 struct CS
 {
     string name;
-    double  shopcount, workshop;
-    float effectiveness;
+    int  shopcount = 0, workshop = 0;
+    float effectiveness = 0;
 };
 
-Pipe p;
-CS cs;
-int option = -1;
 
-void menu()
+
+
+void menu(int& option)
 {
-    cout << "\nChoose option:\n\n 1.Add pipe 2.Add CS 3.View all objects 4.Edit pipe 5.Edit CS 6.Save 7.Load 0.Exit\n";
-    cin >> option;
-
+    cout << "Choose option:\n\n 1.Add pipe 2.Add CS 3.View all objects 4.Edit pipe 5.Edit CS 6.Save 7.Load 0.Exit\n";
+    while (!((cin >> option).good()) || (option < 0)) {
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
 }
 
-void addPipe()
+void checkfloat(float& input)
 {
-    float lenght, diameter;
-
-    cout << "Enter the length" << endl; //VVOD DLINI
-    do {
-        cin >> lenght;
-        if (lenght <= 0) {
-            cout << "Only numbers(> 0)";
-            cout << "\n";
-            cin.clear(); //clean pole vvoda
-            cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
-        }
-    } while (lenght <= 0);
-    cout << "\n";
-    p.lenght = lenght;
-
-    cout << "Enter the diameter" << endl; //VVOD DIAMETRA
-    do {
-        cin >> diameter;
-        if (diameter <= 0) {
-            cout << "Only numbers(> 0)";
-            cout << "\n";
-            cin.clear(); //clean pole vvoda
-            cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
-        }
-    } while (diameter <= 0);
-    cout << "\n";
-    p.diameter = diameter;
-
-
+    while (!((cin >> input).good()) || (input <= 0)) {
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
 }
 
-string WORK(string& status) {
-    cout << "Enter the status (pipe is work? yes or no)" << endl; //STATUS 
-         //ne vivoditsa
+void checkfloat2(float& input)
+{
+    while (!((cin >> input).good()) || (input < 0)) {
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
+}
 
+void checkint(int& input)
+{
+    while (!((cin >> input).good()) || (input <= 0)) {
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
+}
+
+void checkint2(int& input, int& zavod)
+{
+    while (!((cin >> input).good()) || (input < 0) || (input > zavod)) { //ne rabotaet
+        cout << "\nError. Try again\n";
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
+    }
+}
+
+
+void checkstatus(int& status)
+{
     do {
-        cin >> status;
-        if (status == "yes") {
-            status = "Pipe works";
-            return status;
+        checkint(status);
+
+        if (status == 1) {
+            cout << "Pipe is working\n";
         }
-        else if (status == "no") {
-            status = "Pipe under repair";
-            return (status);
+        else if (status == 2) {
+            cout << "Pipe is being repaired\n";
         }
         else {
-            cout << "WRITE YES OR NO!!!\n";
+            cout << "\nError. Try again\n";
         }
-    } while (status != "yes" or status != "no");
 
-    cout << "\n";
-
+    } while ((status != 1) and (status != 2));
 }
 
-void addCS()
-{
-    string name;
-    double  shopcount, workshop;
-    float effectiveness;
 
+
+void addPipe(Pipe& p)
+{
+
+    cout << "Enter the length" << endl; //VVOD DLINI
+    checkfloat(p.lenght);
+
+    cout << "Enter the diameter" << endl; //VVOD DIAMETRA
+    checkfloat(p.diameter);
+
+    cout << "Enter the status (1 - pipe work, 2 - pipe repaired)\n";
+    checkstatus(p.status);
+}
+
+
+
+void addCS(CS& cs)
+{
     cout << "Enter the title of CS" << endl;
-    cin >> name;
-    cs.name = name;
+    getline(cin >> ws, cs.name);
     cout << "\n";
 
     cout << "Enter the number of shop" << endl;
-    do {
+    checkint(cs.shopcount);
+    cout << "\n";
 
-        cin >> shopcount;
-        if (shopcount <= 0 || ((shopcount / trunc(shopcount)) != 1)) {
-            cout << "Only numbers(> 0)";
-            cout << "\n";
-            cin.clear(); //clean pole vvoda
-            cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
-        }
+    cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
+    checkint2(cs.workshop, cs.shopcount); //chota ne rabotaet
 
-    } while ((shopcount <= 0) || ((shopcount / trunc(shopcount)) != 1));
-
-    cs.shopcount = shopcount;
-
-    do {
-
-        cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
-        cin >> workshop;
-        cout << "Only numbers";
-        cout << "\n";
-        cin.clear(); //clean pole vvoda
-        cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
-
-    } while ((cs.shopcount < workshop) || (workshop < 0) || ((workshop / trunc(workshop)) != 1));
-
-    cs.workshop = workshop;
+    cout << "\n";
 
     cout << "Effectiveness" << endl;
-    cout << workshop / shopcount;
-
-
-    effectiveness = workshop / shopcount;
-    cs.effectiveness = effectiveness;
+    checkfloat2(cs.effectiveness);
 }
 
-void Viewallobjects()
+void Viewallobjects(Pipe& p, CS& cs)
 {
-    cout << "Your Pipes: " << endl;
-    cout << "The length = " << p.lenght << endl;
-    cout << "Diameter = " << p.diameter << endl;
-    cout << "Status = " << p.status << endl;
-    cout << "\n";
-
-    cout << "Your CS: " << endl;
-    cout << "Name = " << cs.name << endl;
-    cout << "Shopcount = " << cs.shopcount << endl;
-    cout << "Workshop = " << cs.workshop << endl;
-    cout << "Effectiveness = " << cs.effectiveness << endl;
-
-}
-
-string editPipe(string& status)
-{
-    cout << "Change the state of the pipe( 1 - work; 0 - don't work)" << endl;
-
-    do {
-        cin >> status;
-        if (status == "1") {
-            status = "Pipe works";
-            return status;
-        }
-        else if (status == "0") {
-            status = "Pipe under repair";
-            return (status);
+    if (p.lenght != 0) {
+        cout << "Your Pipes: " << endl;
+        cout << "The length = " << p.lenght << endl;
+        cout << "Diameter = " << p.diameter << endl;
+        if (status == 1) {
+            cout << "Status = Pipe work" << endl;
         }
         else {
-            cout << "You need write 1 or 0!!!\n";
+            cout << "Status = Pipe repaired" << endl;
         }
-    } while (status != "yes" or status != "no");
-
-    cout << "\n";
-}
-
-void editCS(int workshop)
-{
-    do {
-
-        cout << "Change the number of workshops (<= " << cs.shopcount << ")" << endl;
-        cin >> workshop;
         cout << "\n";
-        cin.clear(); //clean pole vvoda
-        cin.ignore(INT_MAX, '\n'); //ignor polya vvoda
+    }
+    else
+        cout << "Pipe not found\n" << endl;
 
-    } while (cs.shopcount < workshop or workshop < 1);
+    if (cs.shopcount != 0) {
+        cout << "Your CS: " << endl;
+        cout << "Name = " << cs.name << endl;
+        cout << "Shopcount = " << cs.shopcount << endl;
+        cout << "Workshop = " << cs.workshop << endl;
+        cout << "Effectiveness = " << cs.effectiveness << endl;
+    }
+    else
+        cout << "CS not found" << endl;
+}
 
-    cs.workshop = workshop;
+void editPipe(Pipe& p)
+{
+    if (p.status != 0) {
+        cout << "Enter the status (1 - pipe work, 2 - pipe repaired)\n";
+        checkstatus(p.status);
+        cout << "Pipe edited";
+    }
+    else cout << "CS is not created";
+}
 
-    cs.effectiveness = cs.workshop / cs.shopcount;
+void editCS(CS& cs)
+{
+    if (cs.shopcount != 0) {
+        cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
+
+        checkint2(cs.workshop, cs.shopcount);
+        cout << "\n" << "CS edited\n";
+    }
+    else cout << "CS is not created\n";
 }
 
 
-void to_file_all_data()
+void to_file_all_data(Pipe& p, CS& cs)
 {
     ofstream fout;   //ifstream file - otvechaet za chtenie, перед этим библеотеку подключаем fstream and string
     fout.open("savee.txt");
 
-    if (p.lenght == 0 and p.diameter == 0)
-        fout << "Pipe not found \n";
-    else
-    {
-        fout << "YOUR PIPE: \n" << p.lenght << endl << p.diameter << endl << p.status << "\n";
-    }
+    //if (p.lenght == 0 and p.diameter == 0)
+       // fout << "Pipe not found \n";
+    //else
+    //{
+    fout << p.lenght << endl << p.diameter << endl << p.status << "\n";
+    //}
 
-    if (cs.shopcount == 0 and cs.workshop == 0)
-        fout << "CS not found \n";
-    else
-    {
-        fout << "\n" << "YOUR CS: \n" << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "\n";
-    }
-    
+    //if (cs.shopcount == 0 and cs.workshop == 0)
+      //  fout << "CS not found \n";
+    //else
+    //{
+    fout << cs.name << endl << cs.shopcount << endl << cs.workshop << endl << cs.effectiveness << "\n";
+    // }
+
     fout.close();
 }
 
-void from_file_all_date()
+void from_file_all_date(Pipe& p, CS& cs)
 {
     ifstream fin;
+    string line;
     fin.open("savee.txt");
-    cout << "Lenth: \n";
     fin >> p.lenght;
     fin >> p.diameter;
     fin >> p.status;
+    fin >> cs.name;
+    fin >> cs.shopcount;
+    fin >> cs.workshop;
+    fin >> cs.effectiveness;
     fin.close();
 }
 
-
 int main()
 {
+    Pipe p;
+    CS cs;
+    int option = -1;
     setlocale(LC_ALL, "ru");
     while (option) {
 
-        menu();
+        menu(option);
         cout << "\n";
 
         switch (option)
         {
         case 1:
             system("cls");
-            addPipe();
-            WORK(p.status);
-            cout << "lenght = " << p.lenght << "\n" << "diameter = " << p.diameter << "\n" << "status = " << p.status << endl;
+            addPipe(p);
             system("pause");
             system("cls");
             break;
-
         case 2:
             system("cls");
-            addCS();
+            addCS(cs);
             cout << "\n";
             system("pause");
             system("cls");
             break;
         case 3:
             system("cls");
-            Viewallobjects();
+            Viewallobjects(p, cs);
             cout << "\n";
             system("pause");
             system("cls");
             break;
         case 4:
             system("cls");
-            editPipe(p.status);
+            editPipe(p);
             system("pause");
             system("cls");
             break;
         case 5:
             system("cls");
-            editCS(cs.workshop);
+            editCS(cs);
             system("pause");
             system("cls");
             break;
         case 6: {
-            to_file_all_data();
+            to_file_all_data(p, cs);
             cout << "File was saved" << "\n";
             system("pause");
             system("cls");
@@ -274,7 +261,7 @@ int main()
         }
 
         case 7: {
-            from_file_all_date();
+            from_file_all_date(p, cs);
             cout << "File was uploaded" << "\n";
             system("pause");
             system("cls");
@@ -284,12 +271,11 @@ int main()
             return 0;
             break;
 
-        default: cout << "Not correct number";
+        default:
+            cout << "Not correct number\n";
             break;
         }
     }
 
 
-
 }
-
