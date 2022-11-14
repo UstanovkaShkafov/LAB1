@@ -139,7 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="pipe.cpp" />
     <ClCompile Include="Putov_laba1.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="checking.h" />
+    <ClInclude Include="cs.h" />
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="pipe.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

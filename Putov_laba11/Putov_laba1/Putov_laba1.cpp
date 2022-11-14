@@ -1,20 +1,22 @@
 ﻿#include <iostream>
 #include <fstream>
 #include <string>
-
+#include <float.h>
+#include <unordered_map>
+#include <unordered_set>
+#include "cs.h"
+#include "pipe.h"
+#include "check.h"
 using namespace std;
-
-struct Pipe
-{
-    float lenght = 0, diameter = 0;
-    int status = 0;
-};
-struct CS
-{
-    string name;
-    int  shopcount = 0, workshop = 0;
-    float effectiveness = 0;
-};
+   
+void info(unordered_map<int, Pipe>& pipe_group, unordered_map<int, CS>& cs_group) {
+    for (auto& pipe : pipe_group) {
+        cout << pipe.second << endl;
+    }
+    for (auto& cs : cs_group) {
+        cout << cs.second << endl;  //info about p/cs's
+    }
+}
 
 
 
@@ -29,96 +31,45 @@ void menu(int& option)
     }
 }
 
-void checkfloat(float& input)
-{
-    while (!((cin >> input).good()) || (input <= 0)) {
-        cout << "\nError. Try again\n";
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
+
+
+
+//void addPipe(Pipe& p)
+//{
+    istream& operator>> (istream & in, Pipe & p)
+    {
+        cout << "Enter the length" << endl;
+        p.lenght = correctnumber(0.0, DBL_MAX);
+
+        cout << "Enter the diameter" << endl;
+        p.diameter = correctnumber(0.0, DBL_MAX);
+
+        cout << "Enter the status (1 - yes, 2 - no)\n";
+        p.status = correctnumber(1, 2);
+        cout << "Pipe added";
+        return in;
     }
-}
+//}
 
-void checkfloatwithZ(float& input) //with zero
-{
-    while (!((cin >> input).good()) || (input < 0)) {
-        cout << "\nError. Try again\n";
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
+
+    istream& operator>> (istream& in, CS& cs)
+    {
+        cout << "Enter the title of CS" << endl;
+        getline(cin, cs.name);
+        cout << "\n";
+
+        cout << "Enter the number of shop" << endl;
+        cs.shopcount = correctnumber(0, INT_MAX);
+        cout << "\n";
+
+        cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
+        cs.workshop = correctnumber(0, cs.shopcount);
+        cout << "\n";
+
+        cout << "Effectiveness" << endl;
+        cs.effectiveness = correctnumber(0, 100);
+        return in;
     }
-}
-
-void checkint(int& input)
-{
-    while (!((cin >> input).good()) || (input <= 0)) {
-        cout << "\nError. Try again\n";
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
-    }
-}
-
-void checkintWork(int& wCS, int& allcs) //wCS - working cs
-{
-    while (!((cin >> wCS).good()) || (wCS < 0) || (wCS > allcs)) { //ne rabotaet
-        cout << "\nError. Try again\n";
-        cin.clear();
-        cin.ignore(INT_MAX, '\n');
-    }
-}
-
-
-void checkstatus(int& status)
-{
-    do {
-        checkint(status);
-
-        if (status == 1) {
-            cout << "Pipe is working\n";
-        }
-        else if (status == 2) {
-            cout << "Pipe is being repaired\n";
-        }
-        else {
-            cout << "\nError. Try again\n";
-        }
-
-    } while ((status != 1) and (status != 2));
-}
-
-
-
-void addPipe(Pipe& p)
-{
-
-    cout << "Enter the length" << endl; //VVOD DLINI
-    checkfloat(p.lenght);
-
-    cout << "Enter the diameter" << endl; //VVOD DIAMETRA
-    checkfloat(p.diameter);
-
-    cout << "Enter the status (1 - yes, 2 - no)\n";
-    checkstatus(p.status);
-}
-
-
-
-void addCS(CS& cs)
-{
-    cout << "Enter the title of CS" << endl;
-    getline(cin >> ws, cs.name);
-    cout << "\n";
-
-    cout << "Enter the number of shop" << endl;
-    checkint(cs.shopcount);
-    cout << "\n";
-
-    cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
-    checkintWork(cs.workshop, cs.shopcount); //chota ne rabotaet
-
-    cout << "\n";
-
-    cout << "Effectiveness" << endl;
-    checkfloatwithZ(cs.effectiveness);
-}
 
 void Viewallobjects(Pipe& p, CS& cs)
 {
