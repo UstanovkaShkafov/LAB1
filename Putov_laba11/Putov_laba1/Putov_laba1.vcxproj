@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cs.cpp" />
     <ClCompile Include="pipe.cpp" />
     <ClCompile Include="Putov_laba1.cpp" />
   </ItemGroup>

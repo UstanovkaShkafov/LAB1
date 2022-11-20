@@ -7,16 +7,9 @@
 #include "cs.h"
 #include "pipe.h"
 #include "check.h"
+
 using namespace std;
-   
-void info(unordered_map<int, Pipe>& pipe_group, unordered_map<int, CS>& cs_group) {
-    for (auto& pipe : pipe_group) {
-        cout << pipe.second << endl;
-    }
-    for (auto& cs : cs_group) {
-        cout << cs.second << endl;  //info about p/cs's
-    }
-}
+  
 
 
 
@@ -31,74 +24,26 @@ void menu(int& option)
     }
 }
 
+void Viewallobjects(unordered_map<int, Pipe>& PipeGroup, unordered_map<int, CS>& CsGroup) {
+    for (auto& pipe : PipeGroup) {
+        cout << pipe.second << endl;
+    }
+    for (auto& cs : CsGroup) {
+        cout << cs.second << endl;  //Viewallobjects
+    }
+}
 
 
 
 //void addPipe(Pipe& p)
 //{
-    istream& operator>> (istream & in, Pipe & p)
-    {
-        cout << "Enter the length" << endl;
-        p.lenght = correctnumber(0.0, DBL_MAX);
-
-        cout << "Enter the diameter" << endl;
-        p.diameter = correctnumber(0.0, DBL_MAX);
-
-        cout << "Enter the status (1 - yes, 2 - no)\n";
-        p.status = correctnumber(1, 2);
-        cout << "Pipe added";
-        return in;
-    }
+   
 //}
 
 
-    istream& operator>> (istream& in, CS& cs)
-    {
-        cout << "Enter the title of CS" << endl;
-        getline(cin, cs.name);
-        cout << "\n";
+   
 
-        cout << "Enter the number of shop" << endl;
-        cs.shopcount = correctnumber(0, INT_MAX);
-        cout << "\n";
 
-        cout << "Enter the number of workshop (<= " << cs.shopcount << ")" << endl;
-        cs.workshop = correctnumber(0, cs.shopcount);
-        cout << "\n";
-
-        cout << "Effectiveness" << endl;
-        cs.effectiveness = correctnumber(0, 100);
-        return in;
-    }
-
-void Viewallobjects(Pipe& p, CS& cs)
-{
-    if (p.lenght != 0) {
-        cout << "Your Pipes: " << endl;
-        cout << "The length = " << p.lenght << endl;
-        cout << "Diameter = " << p.diameter << endl;
-        if (p.status == 1) {
-            cout << "Pipe is work" << endl;
-        }
-        else
-        {
-            cout << "Pipe is repaired" << endl;
-        }
-        cout << "\n";
-    }
-    else
-        cout << "Pipe not found\n" << endl;
-
-    if (cs.shopcount != 0) {
-        cout << "Your CS: " << endl;
-        cout << "Name = " << cs.name << endl;
-        cout << "Shopcount = " << cs.shopcount << endl;
-        cout << "Workshop = " << cs.workshop << endl;
-        cout << "Effectiveness = " << cs.effectiveness << endl;
-    }
-    else
-        cout << "CS not found\n" << endl;
-}
 
 void editPipe(Pipe& p)
 {
@@ -152,33 +97,36 @@ void from_file_all_date(Pipe& p, CS& cs)
 
 int main()
 {
-    Pipe p;
-    CS cs;
     int option = -1;
+    unordered_map<int, Pipe> PipeGroup;
+    unordered_map<int, CS> CsGroup;
     setlocale(LC_ALL, "ru");
     while (option) {
-
-        menu(option);
+        cout << "\nChoose option:\n 1.Add pipe 2.Add CS 3.View all objects " <<
+            "4.Edit pipe 5.Edit CS 6.Save 7.Load 8.Search pipe 9.Search CS 0.Exit\n";
         cout << "\n";
 
-        switch (option)
+        sSwitch (option)
         {
         case 1:
-            system("cls");
-            addPipe(p);
-            system("pause");
-            system("cls");
+            //system("cls");
+            Pipe p;
+            cin >> p;
+            PipeGroup.insert({ p.get_id(), p });
+            //system("pause");
+            //system("cls");
             break;
         case 2:
-            system("cls");
-            addCS(cs);
-            cout << "\n";
-            system("pause");
-            system("cls");
+            //system("cls");
+            CS cs;
+            cin >> cs;
+            //system("pause");
+            //system("cls");
+            CsGroup.insert({ cs.get_id(), cs });
             break;
         case 3:
             system("cls");
-            Viewallobjects(p, cs);
+            Viewallobjects(PipeGroup, CsGroup);
             cout << "\n";
             system("pause");
             system("cls");

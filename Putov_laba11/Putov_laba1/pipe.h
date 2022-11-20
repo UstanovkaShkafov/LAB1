@@ -22,6 +22,7 @@ class Pipe
 
         friend istream& operator>> (istream& in, Pipe& p);
         friend ostream& operator<< (ostream& out, Pipe& p);
+        int get_id() { return idp; }
 
     private:
         double lenght = 0, diameter = 0;
