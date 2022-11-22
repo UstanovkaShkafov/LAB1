@@ -367,6 +367,11 @@ void DelPipe(unordered_map<int, Pipe> pGroup) {
 }
 
 
+void DelCS(unordered_map<int, CS>& cGroup)
+{
+   
+}
+
 void selectPipesByFilter(unordered_map<int, Pipe> pGroup) {
     if (pGroup.size() != 0) {
         auto x = search_p(pGroup);
