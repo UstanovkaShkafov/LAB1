@@ -10,7 +10,7 @@
 
 using namespace std;
 template <typename T>
-T correctnumber(T min, T max) {
+T getcorrectnumber(T min, T max) {
     T x;
     while (((cin >> x).fail()) || (cin.peek() != '\n') || (x < min) || (x > max)) {
         cout << "Error!!! Input numeric value >= " << min << " and =< " << max << endl;
@@ -26,6 +26,7 @@ ostream& operator<< (ostream& out, unordered_map <int, T>& p) {
     for (auto& [i, obj] : p) {
         out << i << " ";
     }
+
     out << endl;
     return out;
 }
@@ -36,9 +37,6 @@ ostream& operator<< (ostream& out, unordered_map <int, T>& p) {
 
 template <typename T>
 using filter_p = bool (*) (Pipe& p, T par);
-
-template <typename T>
-using filter_cs = bool(*) (CS& cs, T par);
 
 
 template <typename T>
@@ -52,13 +50,3 @@ vector <int> search_p_by_parametr(unordered_map <int, Pipe>& pipe_group, filter_
 }
 
 
-
-template <typename T>
-vector <int> search_cs_by_parametr(unordered_map <int, CS>& cs_group, filter_cs<T> f, T par) {
-    vector <int> id;
-    for (auto& cs : cs_group) {
-        if (f(cs.second, par))
-            id.push_back(cs.second.get_id());
-    }
-    return id;
-}

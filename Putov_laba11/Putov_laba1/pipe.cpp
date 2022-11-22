@@ -32,11 +32,11 @@ istream& operator>> (istream& in, Pipe& p)
 
     getline(cin, p.name);
     cout << "\nInput lenght ";
-    p.length = correctnumber(0.1, DBL_MAX);
+    p.length = getcorrectnumber(0.1, DBL_MAX);
     cout << "\nInput diameter ";
-    p.diameter = correctnumber(0.1, DBL_MAX);
+    p.diameter = getcorrectnumber(0.1, DBL_MAX);
     cout << "\nChoose status of pipe (0 if repairing, 1 if works) ";
-    p.inWork = correctnumber(0, 1);
+    p.inWork = getcorrectnumber(0, 1);
     cout << status_check(p.inWork) << endl;
     return in;
 }
@@ -58,7 +58,7 @@ bool is_there_idPipe(unordered_map<int, Pipe> pipe_group, int id, int size_) {
 void Pipe::edit_Pipe() {
     cout << "Status: " << status_check(inWork) << endl;
     cout << "Enter new status of pipe (0 if in repairing, 1 if works)" << endl;
-    inWork = correctnumber(0, 1);
+    inWork = getcorrectnumber(0, 1);
     cout << status_check(inWork) << endl;;
 
 }

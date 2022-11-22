@@ -19,11 +19,11 @@ istream& operator>> (istream& in, CS& cs)
     cin.ignore(INT_MAX, '\n');
     getline(cin, cs.name);
     cout << "\nNumber of workshops ";
-    cs.workshop = correctnumber(0, INT_MAX);
+    cs.workshop = getcorrectnumber(0, INT_MAX);
     cout << "\nNumber of working workshops ";
-    cs.working_workshop = correctnumber(0, cs.workshop);
+    cs.working_workshop = getcorrectnumber(0, cs.workshop);
     cout << "\nEnter the effectiveness ";
-    cs.effectiveness = correctnumber(0, 100);
+    cs.effectiveness = getcorrectnumber(0, 100);
     return in;
 }
 ostream& operator<< (ostream& out, CS& cs) {
@@ -31,6 +31,13 @@ ostream& operator<< (ostream& out, CS& cs) {
         << "\nNumber of working workshops: " << cs.working_workshop << "\nEffectiveness: "
         << cs.effectiveness << "%" << endl;
     return out;
+}
+
+void CS::edit_cs() {
+    cout << "Workshops: " << workshop << endl;
+    cout << "Working workshop: " << working_workshop << endl;
+    cout << "Enter new number of working workshops" << endl;
+    working_workshop = getcorrectnumber(0, workshop);
 }
 
 

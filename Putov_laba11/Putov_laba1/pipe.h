@@ -30,7 +30,8 @@ public:
     // float get_diameter() { return diameter; };
      //bool get_inWork() { return inWork; };
     void edit_Pipe();
-
+    void save_pipe(ofstream& file);
+    void load_pipe(ifstream& file);
 
     friend istream& operator>> (istream& in, Pipe& p);
     friend ostream& operator<< (ostream& out, Pipe& p);
