@@ -20,33 +20,14 @@ T getcorrectnumber(T min, T max) {
     return x;
 }
 
-template <typename T>
-ostream& operator<< (ostream& out, unordered_map <int, T>& p) {
-    out << "Exiting id: ";
-    for (auto& [i, obj] : p) {
-        out << i << " ";
-    }
-
-    out << endl;
-    return out;
-}
 
 
 
 
 
-template <typename T>
-using filter_p = bool (*) (Pipe& p, T par);
 
 
-template <typename T>
-vector <int> search_p_by_parametr(unordered_map <int, Pipe>& pipe_group, filter_p<T> f, T par) {
-    vector <int> idPipe;
-    for (auto& pipe : pipe_group) {
-        if (f(pipe.second, par))
-            idPipe.push_back(pipe.second.get_idPipe());
-    }
-    return idPipe;
-}
+
+
 
 

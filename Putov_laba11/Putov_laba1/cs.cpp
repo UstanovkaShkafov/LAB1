@@ -40,4 +40,11 @@ void CS::edit_cs() {
     working_workshop = getcorrectnumber(0, workshop);
 }
 
-
+void CS::load_cs(ifstream& file) {
+    file >> idcs;
+    getline(file, name);
+    getline(file, name);
+    file >> workshop;
+    file >> working_workshop;
+    file >> effectiveness;
+}

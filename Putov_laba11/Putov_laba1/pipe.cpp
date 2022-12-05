@@ -62,11 +62,14 @@ void Pipe::edit_Pipe() {
     cout << status_check(inWork) << endl;;
 
 }
+void Pipe::load_pipe(ifstream& file) {
+    file >> idPipe;
+    getline(file, name);
+    getline(file, name);
+    file >> length;
+    file >> diameter;
+    file >> inWork;
+}
 
-//int count_not_null_pipe(unordered_map<int, Pipe> pipe_group, int size_) {
-   //int count = 0;
-    //for (int i = 0; i < size_; i++)
-    //    if (pipe_group[i].get_length() != 0) count += 1;
-    //return count;
-//}
+
 
